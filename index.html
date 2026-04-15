@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bitcount+Grid+Double:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bitcount+Grid+Double:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITE Board Review: Q21 - Q40</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cove: {
+                            dark: '#006BBB',
+                            light: '#30A0E0',
+                            accent: '#FFC872',
+                            pale: '#FFE3B3'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        /* 3D Flip Card Styles */
+        .scene {
+            perspective: 1200px;
+        }
+        .card {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari */
+        }
+        .card-face-back {
+            transform: rotateY(180deg);
+        }
+        
+        /* Custom Scrollbar for inner content */
+        .scrollable-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .scrollable-content::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 4px;
+        }
+        .scrollable-content::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .scrollable-content::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        /* Dark Mode Scrollbar */
+        .dark .scrollable-content::-webkit-scrollbar-track {
+            background: #1e293b; /* slate-800 */
+        }
+        .dark .scrollable-content::-webkit-scrollbar-thumb {
+            background: #475569; /* slate-600 */
+        }
+        .dark .scrollable-content::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 min-h-screen flex flex-col items-center justify-center p-4 md:p-8 font-sans text-slate-800 dark:text-slate-200 transition-colors duration-300">
+
+    <!-- Dark Mode Toggle -->
+    <button onclick="toggleDarkMode()" class="absolute top-4 right-4 md:top-8 md:right-8 w-12 h-12 flex items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-md text-slate-600 dark:text-slate-300 hover:text-cove-light dark:hover:text-cove-accent transition-all border border-slate-200 dark:border-slate-700">
+        <i id="theme-icon" class="ph ph-moon text-2xl"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="mb-6 text-center max-w-3xl w-full">
+        <h1 style="font-family: 'Bangers'" class="text-5xl text-cove-dark dark:text-cove-light mb-2">American Board of Family Medicine</h1>
+        <p style="font-family: 'Roboto'" class="text-slate-600 bold-text dark:text-slate-400">In-Training Examination</p>
+    </header>
+
+    <!-- Main Flashcard Container -->
+    <main class="w-full flex-grow flex flex-col justify-center items-center">
+        
+        <div class="scene w-[80vw] h-[80vh] relative">
+            <div id="flashcard" class="card w-full h-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl transition-colors duration-300">
+                
+                <!-- Front Face (Question) -->
+                <div class="card-face card-face-front bg-white dark:bg-slate-800 rounded-2xl flex flex-col overflow-hidden border border-slate-200 dark:border-slate-700">
+                    <div class="p-6 border-b border-cove-pale dark:border-cove-dark/60 flex justify-between items-center bg-cove-pale/40 dark:bg-cove-dark/40">
+                        <span id="question-number" class="text-lg font-bold text-cove-dark dark:text-cove-pale">Question 21</span>
+                        <button onclick="flipCard()" class="flex items-center gap-2 text-sm font-medium text-cove-dark dark:text-cove-pale hover:text-cove-light dark:hover:text-white transition-colors">
+                            <i class="ph ph-arrows-left-right text-lg"></i>
+                            Flip to Explanation
+                        </button>
+                    </div>
+                    
+                    <div class="p-6 overflow-y-auto scrollable-content flex-grow flex flex-col">
+                        <div id="question-text" class="text-lg leading-relaxed mb-6 whitespace-pre-wrap font-medium text-slate-800 dark:text-slate-200"></div>
+                        
+                        <div id="options-container" class="space-y-3 mt-auto">
+                            <!-- Options injected by JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 bg-slate-50 dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700">
+                        <button onclick="showAnswer()" id="show-answer-btn" class="w-full py-3 px-4 bg-cove-dark hover:bg-cove-light text-white font-medium rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2">
+                            <i class="ph ph-check-circle text-xl"></i>
+                            Show Correct Answer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Back Face (Explanation) -->
+                <div class="card-face card-face-back bg-white dark:bg-slate-800 rounded-2xl flex flex-col overflow-hidden border border-slate-200 dark:border-slate-700">
+                    <div class="p-6 border-b border-cove-light dark:border-cove-dark flex justify-between items-center bg-cove-light dark:bg-cove-dark">
+                        <span class="text-lg font-bold text-white">Explanation</span>
+                        <button onclick="flipCard()" class="flex items-center gap-2 text-sm font-medium text-white hover:text-cove-pale transition-colors">
+                            <i class="ph ph-arrow-u-up-left text-lg"></i>
+                            Back to Question
+                        </button>
+                    </div>
+                    
+                    <div class="p-6 overflow-y-auto scrollable-content flex-grow">
+                        <div class="mb-4">
+                            <h3 class="text-sm uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 mb-1">Correct Answer</h3>
+                            <div id="correct-answer-text" class="text-lg font-medium text-cove-dark dark:text-cove-pale bg-cove-pale dark:bg-cove-dark/40 p-4 rounded-xl border border-cove-accent dark:border-cove-accent/50"></div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-sm uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 mb-2">Rationale</h3>
+                            <div id="explanation-text" class="text-md leading-relaxed text-slate-700 dark:text-slate-300 whitespace-pre-wrap"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="mt-8 flex items-center justify-between w-full max-w-sm">
+            <button onclick="prevSlide()" id="prev-btn" class="w-12 h-12 flex shrink-0 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-md text-cove-dark dark:text-cove-light hover:text-cove-light hover:bg-cove-pale/50 dark:hover:bg-slate-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-slate-200 dark:border-slate-700">
+                <i class="ph ph-caret-left text-2xl"></i>
+            </button>
+            
+            <div id="progress-indicator" class="font-medium text-slate-500 dark:text-slate-400">
+                1 of 20
+            </div>
+            
+            <button onclick="nextSlide()" id="next-btn" class="w-12 h-12 flex shrink-0 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-md text-cove-dark dark:text-cove-light hover:text-cove-light hover:bg-cove-pale/50 dark:hover:bg-slate-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-slate-200 dark:border-slate-700">
+                <i class="ph ph-caret-right text-2xl"></i>
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        const quizData = [
+            {
+                qNum: 21,
+                question: "A 72-year-old male presents with a 45-minute history of persistent bleeding from his left nostril. He has a medical history of aortic stenosis with a mechanical aortic valve replacement, coronary artery disease, hypertension, and type 2 diabetes. His medications include hydrochlorothiazide, lisinopril, metformin, and warfarin. A physical examination reveals a blood pressure of 170/100 mm Hg without orthostatic change and a heart rate of 90 beats/min.\n\nWhich one of the following would be the most appropriate first step in the treatment of this patient's nosebleed?",
+                options: [
+                    "A) Digital compression of the lower nares for 20 minutes",
+                    "B) Topical vasoconstrictors",
+                    "C) Anterior nasal packing",
+                    "D) Electrical cauterization",
+                    "E) Reversal of anticoagulation"
+                ],
+                correctIndex: 0,
+                explanation: "The initial treatment of a hemodynamically stable patient with epistaxis is to pinch the lower third of the nose for 15-20 minutes. If digital compression is not successful in stopping the bleeding and an anterior bleeding site is visualized on anterior rhinoscopy, then the next step would be to either apply topical vasoconstrictors or use chemical/electrical cautery. If bleeding continues after local measures fail, then anterior nasal packing would be indicated. Acute reversal of anticoagulation should be considered in a patient with ongoing bleeding who is hemodynamically unstable."
+            },
+            {
+                qNum: 22,
+                question: "An 80-year-old male presents to your office for follow-up of stable angina. He has a medical history of coronary artery disease with placement of a single drug-eluting stent, and stage 4 chronic kidney disease secondary to hypertension. His most recent echocardiogram demonstrated a normal ejection fraction. He does not want additional cardiovascular intervention and prefers you to handle all of his care in the future. The patient's current medications include the following:\n\nAspirin, 81 mg daily\nCarvedilol (Coreg), 12.5 mg twice daily\nEmpagliflozin (Jardiance), 10 mg daily\nLosartan (Cozaar), 50 mg daily\n\nOn examination he has a blood pressure of 140/85 mm Hg, a heart rate of 52 beats/min, and an oxygen saturation of 98% on room air. A cardiopulmonary examination is within normal limits and an EKG is unchanged from past EKGs.\n\nWhich one of the following changes to this patient's medication regimen would be most appropriate to decrease his anginal symptoms?",
+                options: [
+                    "A) Increasing carvedilol",
+                    "B) Increasing empagliflozin",
+                    "C) Adding clopidogrel",
+                    "D) Adding isosorbide mononitrate",
+                    "E) Adding ivabradine"
+                ],
+                correctIndex: 3,
+                explanation: "β-Blockers, calcium channel blockers, and long-acting nitrates are first-line medications to decrease symptoms in patients with angina. If symptoms persist despite the use of a maximally tolerated dose of a single first-line medication, an additional drug from a different class should be introduced. Adding isosorbide mononitrate is the most appropriate option for this patient; however, it may decrease his blood pressure and will require close attention on follow-up.\n\nIncreasing the patient's carvedilol is not recommended due to his relative bradycardia. Ranolazine is another potential recommendation but is often more costly. Ivabradine is contraindicated in patients with chronic coronary disease and normal ejection fraction."
+            },
+            {
+                qNum: 23,
+                question: "A 35-year-old female presents because of a 4-week history of difficulty sleeping following the death of her partner of 2 years. She has difficulty initiating and maintaining sleep and reports daytime sleepiness. Her symptoms have not improved despite attending grief counseling sessions. She requests nonpharmacologic treatment for her insomnia.\n\nWhich one of the following is a component of sleep hygiene education for cognitive behavioral therapy for insomnia?",
+                options: [
+                    "A) Decreasing time spent in bed",
+                    "B) Increasing daytime napping",
+                    "C) Waking up at the same time every day",
+                    "D) Placing a digital clock next to the bed"
+                ],
+                correctIndex: 2,
+                explanation: "Acute insomnia is a sleep continuity disturbance, defined as difficulty initiating and/or maintaining sleep, that occurs ≥3 days per week with a duration of 1 week to 3 months. The first step in management is identifying and treating the underlying cause. Cognitive behavioral therapy for insomnia (CBT-I) is an effective treatment. CBT-I has 3 categories: sleep hygiene education, sleep restriction, and stimulus control.\n\nWaking up at the same time every day and not napping during the day are among the components of sleep hygiene education. Stimulus control strategies include going to bed only when sleepy and reserving the bedroom for sleep and sex."
+            },
+            {
+                qNum: 24,
+                question: "A 32-year-old female presents with classic symptoms of mild hypothyroidism including cold intolerance, mild fatigue, and constipation. Her TSH level is 6.0 μU/mL (N 0.4-4.2) and her free T4 level is within normal limits. A pregnancy test is negative.\n\nWhich one of the following factors, if present, would be an indication for prescribing levothyroxine?",
+                options: [
+                    "A) A repeat TSH level in 4-6 weeks remains at 6.0 μU/mL",
+                    "B) A repeat TSH level in 4-6 weeks increases to 8.0 μU/mL",
+                    "C) An elevated free T3 level",
+                    "D) An elevated thyroid peroxidase antibody level",
+                    "E) Treatment-resistant constipation"
+                ],
+                correctIndex: 3,
+                explanation: "Because the signs and symptoms of hypothyroidism can be nonspecific, diagnosis is based on blood levels of TSH and free T4. Subclinical hypothyroidism is defined by a TSH level that is abnormal but <10 μU/mL while the free T4 level remains within the normal range.\n\nNonpregnant patients with subclinical hypothyroidism should not be treated with thyroid hormone replacement therapy unless the thyroid peroxidase antibody level is elevated or the TSH level is >10 μU/mL. Evaluating total or free T3 level is not routinely indicated. Treatment-resistant depression is an indication for treating subclinical hypothyroidism, but this is not the case for treatment-resistant constipation."
+            },
+            {
+                qNum: 25,
+                question: "A 44-year-old female presents to the emergency department for evaluation of heavy vaginal bleeding. She reports soaking a pad every hour for the past 6 hours and is feeling mildly short of breath and lightheaded. The patient has a past medical history of hypertension, migraines, and breast cancer for which she underwent lumpectomy 6 months ago. Her only medication is hydrochlorothiazide. Vital signs: BP 110/60, HR 80, RR 16, O2 sat 100%. PT, PTT, and platelet count are normal, pregnancy test is negative. Hemoglobin is 8.0 g/dL (N 12.0-16.0).\n\nWhich one of the following would be the most appropriate next step?",
+                options: [
+                    "A) A high-dose combined oral contraceptive",
+                    "B) Intravenous conjugated estrogens",
+                    "C) Intravenous tranexamic acid",
+                    "D) Depot medroxyprogesterone acetate",
+                    "E) A levonorgestrel IUD"
+                ],
+                correctIndex: 2,
+                explanation: "Abnormal uterine bleeding is a common clinical entity. Clinicians should determine if the bleeding is severe or life-threatening and ensure stability. While this patient's bleeding is severe and she has symptoms of acute blood loss anemia, her vital signs indicate hemodynamic stability.\n\nThe most appropriate next step is to administer intravenous tranexamic acid. Given this patient's recent cancer history, it is advisable to avoid therapies with estrogen or progesterone such as high-dose combined OCPs or depot medroxyprogesterone. IV estrogen is reserved for hemodynamically unstable patients given the risk for clotting. A levonorgestrel IUD is effective for long-term management, but insertion in the ED is impractical."
+            },
+            {
+                qNum: 26,
+                question: "A 45-year-old female presents with a 1-year history of central facial erythema, telangiectasias, and inflammatory pustules and papules. The symptoms are worsened by alcohol and excessive sun exposure. You diagnose rosacea. She has not had any previous success with moisturizers, aggressive sun protection, or mild facial soap.\n\nWhich one of the following would be the most appropriate first step in the management of this condition?",
+                options: [
+                    "A) Topical brimonidine",
+                    "B) Topical cyclosporine",
+                    "C) Topical metronidazole",
+                    "D) Oral doxycycline",
+                    "E) Laser or light-based therapy"
+                ],
+                correctIndex: 2,
+                explanation: "Topical metronidazole is a first-line treatment for rosacea. The cost and side-effect profile of topical metronidazole make it most appropriate. Topical azelaic acid is also a first-line treatment for rosacea.\n\nOral doxycycline is a reasonable next step if topical metronidazole is not successful. Increased sun sensitivity is a common side effect of doxycycline that is problematic since rosacea is worse in warmer months. Laser and light-based therapies, brimonidine, and topical cyclosporine are considered second-line treatments."
+            },
+            {
+                qNum: 27,
+                question: "A 67-year-old female presents for a wellness examination. She has not been seen for medical care for several years and reports that her last Papanicolaou test was 15 years ago. She does not recall any medical problems and has no known history of abnormal cervical cytology in the past.\n\nAccording to the U.S. Preventive Services Task Force, which one of the following should you recommend regarding further cervical cancer screening?",
+                options: [
+                    "A) No further screening due to the patient's age",
+                    "B) Cervical cytology alone now, with no further screening if the result is normal",
+                    "C) Cervical cytology alone now, then repeated in 3 years with no further screening if the results are normal",
+                    "D) Cervical cytology with HPV co-testing now, with no further screening if the results are normal",
+                    "E) Cervical cytology with HPV co-testing now, then repeated in 5 years with no further screening if the results are normal"
+                ],
+                correctIndex: 4,
+                explanation: "The U.S. Preventive Services Task Force recommends against cervical cancer screening in women older than 65 years ONLY if they have had adequate prior screening. Adequate screening is defined as 3 consecutive negative cytology results or 2 consecutive negative co-testing results within 10 years before stopping screening, with the most recent test occurring within 5 years.\n\nBecause this patient has not had adequate prior screening, she requires either 2 consecutive negative co-testing results that are 5 years apart or 3 consecutive negative cytology results that are 3 years apart before stopping screening."
+            },
+            {
+                qNum: 28,
+                question: "A 46-year-old male comes in for an acute visit for low back pain. During triage, a PHQ-2 screen is positive. You then administer the PHQ-9. You ask, 'Over the last 2 weeks, how often have you been bothered by thoughts that you would be better off dead, or of hurting yourself?' He responds, 'Nearly every day.' His total PHQ-9 score is 19.\n\nWhich one of the following would be the most appropriate next step?",
+                options: [
+                    "A) Suicidal ideation assessment and evaluation of risk factors for suicide completion",
+                    "B) Escitalopram, and cognitive behavioral therapy",
+                    "C) Escitalopram plus lithium, and cognitive behavioral therapy",
+                    "D) Intravenous ketamine",
+                    "E) Transportation to the emergency department"
+                ],
+                correctIndex: 0,
+                explanation: "Suicidal ideation is much more common than suicide attempts or completions and should be carefully addressed. Current recommendations for evaluating suicidal ideation suggest focusing on individual assessment and understanding certain risk factors that may exacerbate suicidal ideation for a given patient. This includes asking questions, such as whether the patient has a plan and means to complete the plan.\n\nSSRIs and CBT are first-line treatments for majority of people with depression and suicidality, but this patient requires further evaluation for suicide risk before initiating pharmacologic therapy. If the patient endorses suicide plans, transfer to an inpatient treatment facility may be indicated."
+            },
+            {
+                qNum: 29,
+                question: "A healthy 58-year-old patient presents for an annual health maintenance examination. They had an initial screening colonoscopy 3 years ago in which 2 polyps were removed. The polyps were found to be 6-mm and 8-mm tubular adenomas. The patient does not have a family history of colon cancer.\n\nWhich one of the following is the most appropriate ongoing colon cancer screening for this patient?",
+                options: [
+                    "A) No further follow-up",
+                    "B) Fecal immunochemical testing (FIT) now",
+                    "C) Stool DNA testing (Cologuard) now",
+                    "D) Repeat colonoscopy within the next 2 years",
+                    "E) Repeat colonoscopy 7-10 years after the initial colonoscopy"
+                ],
+                correctIndex: 4,
+                explanation: "For average-risk patients with 1-2 tubular adenomas <10 mm in size found on screening colonoscopy, repeat colonoscopy in 7-10 years is recommended. The risk of small adenomas progressing to malignancy is quite low and the rate of progression is slow, likely >10 years.\n\nThe U.S. Multi-Society Task Force on Colorectal Cancer recommends follow-up in 7-10 years for 1-2 tubular adenomas <10 mm in size; 3-5 years for 3-4 tubular adenomas <10 mm; 3 years for 5-10 tubular adenomas <10 mm; and yearly for >10 adenomas. In the United States, only colonoscopy is recommended for follow-up of findings of colonic polyps."
+            },
+            {
+                qNum: 30,
+                question: "A 27-year-old gravida 1 para 0 at 38 weeks' estimated gestation based on a first-trimester ultrasound presents for routine prenatal care. Her pregnancy has been uncomplicated. You discuss the potential risks and benefits of inducing labor at 39 weeks compared to expectant management.\n\nIn this discussion, you should tell the patient that inducing labor at 39 weeks reduces",
+                options: [
+                    "A) the risk of low birth weight",
+                    "B) length of stay in the labor and delivery unit",
+                    "C) risk for neonatal ICU admission",
+                    "D) the rate of cesarean delivery",
+                    "E) the risk of postpartum hemorrhage"
+                ],
+                correctIndex: 3,
+                explanation: "The 2018 ARRIVE trial included more than 6000 low-risk nulliparous patients who were assigned to either induction of labor (IOL) at 39 weeks or expectant management. A significantly lower rate of cesarean delivery was found in the intervention group than the control group (18.6% compared to 22.2%).\n\nOther findings included lower rates of gestational hypertension/preeclampsia. However, it increased length of stay in the labor and delivery unit. It did not reduce the risk of low infant birth weight (though median birth weight was lower). There were no significant differences in neonatal ICU admission and maternal risk of postpartum hemorrhage."
+            },
+            {
+                qNum: 31,
+                question: "A 75-year-old female presents to your office with a 1-year history of gradually worsening right-sided groin pain on standing. The pain improves with rest. These symptoms have been marginally relieved with ibuprofen and acetaminophen, but her use of these medications has been limited by gastric irritation. A physical examination is most notable for pain in the groin with passive flexion, adduction, and internal rotation (FADIR) testing.\n\nWhich one of the following treatments would be most helpful in relieving her symptoms?",
+                options: [
+                    "A) A topical lidocaine patch",
+                    "B) Hydrocodone",
+                    "C) Tramadol",
+                    "D) Intra-articular corticosteroid injection",
+                    "E) Intra-articular hyaluronic acid injection"
+                ],
+                correctIndex: 3,
+                explanation: "This patient presents with hip osteoarthritis. Intra-articular corticosteroid injections have been shown to relieve hip and osteoarthritis pain for at least 4 months. In addition to pain relief, these injections may improve activity levels and quality of life.\n\nIn contrast, intra-articular hyaluronic acid injections have not been shown to be substantially beneficial in relieving symptoms of hip osteoarthritis. Topical lidocaine patches are not effective for this. Opioids (hydrocodone, tramadol) are advised against for treatment of chronic osteoarthritis due to significant side effects and risk of addiction without long-term effectiveness."
+            },
+            {
+                qNum: 32,
+                question: "A 65-year-old male is brought to the emergency department by his wife after developing confusion immediately after sexual intercourse. The wife reports that the patient does not remember anything from a few hours prior to the onset of symptoms. He repeatedly asks where he is, how he got here, and what time it is, despite having been given the answers to his questions. He is alert and knows his wife, his name, and his birth date. Neurologic exam, CBC, CMP, EKG, and Head CT are all normal. It has now been 2 hours since the onset of his symptoms.\n\nWhich one of the following would be most appropriate for treatment?",
+                options: [
+                    "A) Observation and reassurance",
+                    "B) Oral apixaban",
+                    "C) Oral aspirin and clopidogrel",
+                    "D) Intravenous lorazepam",
+                    "E) Intravenous thrombolytic therapy"
+                ],
+                correctIndex: 0,
+                explanation: "This patient has transient global amnesia (TGA), which is characterized by the abrupt onset of anterograde amnesia without other neurologic deficits or cognitive impairment. TGA can be triggered by intense physical or psychological stress such as sexual intercourse or acute illness.\n\nSymptoms usually resolve within approximately 6 hours. No intervention is indicated for TGA other than reassurance. The etiology of TGA is unrelated to seizure, TIA, or stroke. Anticoagulants, antiplatelet medications, and thrombolytic therapy are not indicated."
+            },
+            {
+                qNum: 33,
+                question: "A 55-year-old male presents to the urgent care clinic with a 24-hour history of worsening fever, chills, and body aches. He tells you that he discovered a tick on his scalp during a camping trip last week. He does not have a rash, headache, or palpitations, and a neurologic examination is negative. A Lyme enzyme immunoassay and confirmatory Western blot are positive. When he has taken doxycycline in the past, he has developed headaches, severe nausea, and vomiting.\n\nWhich one of the following would be the most appropriate treatment option for this patient?",
+                options: [
+                    "A) Amoxicillin",
+                    "B) Ceftriaxone",
+                    "C) Chloramphenicol",
+                    "D) Doxycycline plus promethazine"
+                ],
+                correctIndex: 0,
+                explanation: "Lyme disease can be diagnosed clinically in patients with erythema migrans, or via a 2-tiered testing regimen for patients who present without a rash. Doxycycline is the preferred first-line treatment, but for patients who are pregnant or do not tolerate it, an appropriate alternative is amoxicillin, 500 mg 3 times daily for 14-21 days.\n\nIt is important to prescribe a medication that the patient can tolerate for its full course. Intravenous ceftriaxone is indicated for late neurologic manifestations, not this early presentation. Chloramphenicol is the preferred treatment for Rocky Mountain spotted fever in patients with contraindications to doxycycline therapy."
+            },
+            {
+                qNum: 34,
+                question: "A 66-year-old female asks about options for shingles vaccine. She received the live zoster vaccine (Zostavax) previously. She underwent urgent cholecystectomy for acute cholecystitis 2 months ago and developed shingles in a dermatomal distribution soon after hospital discharge. She was given valacyclovir and gabapentin. The rash is gone but she still has mild postherpetic neuralgia. She would like to receive the recombinant zoster vaccine (Shingrix) as soon as it is safe to receive it.\n\nWhich one of the following would be the earliest this patient can safely receive the first dose of recombinant zoster vaccine?",
+                options: [
+                    "A) Today",
+                    "B) After resolution of the postherpetic neuralgia",
+                    "C) 12 months after her episode of shingles",
+                    "D) Never"
+                ],
+                correctIndex: 0,
+                explanation: "The recombinant zoster vaccine (RZV) is recommended for healthy adults ≥ 50 years of age, and this patient can receive it today. Available data and expert reviews support vaccination after a prior episode because the risk for recurrence remains and RZV is safe and immunogenic.\n\nThe CDC recommends that patients wait until the zoster rash has resolved prior to receiving RZV, but it is not necessary to wait until postherpetic neuralgia has resolved. Patients who have previously received the live zoster vaccine (Zostavax) should receive RZV as well."
+            },
+            {
+                qNum: 35,
+                question: "A 40-year-old male presents to the office with a 2-day history of right eye pain associated with redness and swelling. He does not wear contact lenses. Pertinent findings on a physical examination include a temperature of 37.3°C (99.1°F), visual acuity of 20/70 in the right eye and 20/20 in the left eye, erythema and edema of the right eyelid, and pain with extraocular movements.\n\nWhich one of the following would be the most appropriate next step?",
+                options: [
+                    "A) Frequent warm, moist compresses, and follow-up tomorrow",
+                    "B) Empiric treatment with an oral antibiotic",
+                    "C) A same-day evaluation with an ophthalmologist",
+                    "D) Noncontrast CT of the orbits and sinuses",
+                    "E) Transfer to the emergency department"
+                ],
+                correctIndex: 4,
+                explanation: "This patient's unilateral orbital swelling, erythema, pain with extraocular movements, and decreased visual acuity are concerning for orbital cellulitis. Prompt recognition and early treatment are vital to avoid worsening outcomes associated with this ocular emergency.\n\nA patient who presents in the outpatient setting with clinical findings that are suspicious for orbital cellulitis should be promptly directed to the emergency department (ED) for expedited evaluation and anticipated hospitalization for urgent ophthalmology consultation and broad-spectrum intravenous antibiotics. CT with intravenous contrast is the imaging modality of choice."
+            },
+            {
+                qNum: 36,
+                question: "A 63-year-old male presents with a 2-day history of right lower extremity edema and pain. He has a past medical history of hypertension, stage 4 chronic kidney disease, and type 2 diabetes. His last glomerular filtration rate was 22 mL/min/1.71 m². He does not report any trauma, chest pain, or shortness of breath.\n\nOn examination his weight is 70 kg. Examination of his right lower extremity reveals erythema, tenderness, and 2+ edema at the back of the knee. A Doppler venous duplex ultrasound shows a noncompressible right femoral vein.\n\nWhich one of the following would be the most appropriate initial treatment for this patient's condition?",
+                options: [
+                    "A) Oral dabigatran, 75 mg twice daily",
+                    "B) Oral rivaroxaban, 15 mg twice daily for 14 days, then 20 mg daily",
+                    "C) Oral warfarin, 5 mg daily",
+                    "D) Subcutaneous enoxaparin, 70 mg daily",
+                    "E) Admission for intravenous heparin"
+                ],
+                correctIndex: 3,
+                explanation: "This patient has an acute deep vein thrombosis (DVT) with no evidence of pulmonary embolism. Outpatient treatment would be appropriate and a low-molecular-weight heparin such as enoxaparin is a reasonable option. Renal dosing (due to eGFR < 30) is the reason for daily, rather than twice-daily, dosing for enoxaparin.\n\nDabigatran is not preferred due to a higher risk for bleeding. DOACs like rivaroxaban are not appropriate due to his eGFR < 30 mL/min/1.73 m². Warfarin is not recommended for the acute phase treatment of DVT in this patient. Admission for IV heparin is generally not indicated for uncomplicated DVT."
+            },
+            {
+                qNum: 37,
+                question: "A 65-year-old male presents to your office with a 4-month history of ill-defined lower pelvic pain. He is afebrile. An abdominal examination is unremarkable. A digital rectal examination yields a boggy prostate with moderate tenderness. Urinalysis is positive for leukocyte esterase and 10-20 WBCs/hpf, and testing for common sexually transmitted infections is negative.\n\nWhich one of the following would be the most appropriate next step in management?",
+                options: [
+                    "A) Amoxicillin",
+                    "B) Ceftriaxone",
+                    "C) Ciprofloxacin",
+                    "D) CT of the abdomen and pelvis",
+                    "E) Referral to a urologist"
+                ],
+                correctIndex: 2,
+                explanation: "This patient has chronic bacterial prostatitis (CBP) and should be treated with a fluoroquinolone such as ciprofloxacin.\n\nFluoroquinolones are the first-line treatment for CBP because they favorably cover the common uropathogens that cause CBP, penetrate prostatic tissue well, and have high oral bioavailability. Amoxicillin and ceftriaxone are not preferred for the treatment of prostatitis. CT is not necessary to make the diagnosis. Referral to a urologist is unnecessary because the diagnosis and management of CBP is within the scope of family medicine."
+            },
+            {
+                qNum: 38,
+                question: "A 25-year-old male presents to the emergency department with a sudden onset of right-sided chest pain that started about 2 hours ago while he was resting and playing video games. He reports feeling slightly short of breath. He has no history of lung disease, and he smokes 1 pack of cigarettes per day. Vitals: BP 120/80, HR 115, RR 20, O2 sat 90%. A chest x-ray reveals a pneumothorax involving <10% of the lung space.\n\nWhich one of the following would be the most appropriate next step in management?",
+                options: [
+                    "A) Reassurance and discharge home with return precautions for worsening symptoms",
+                    "B) Initiation of oxygen via nasal cannula, and a repeat chest x-ray in 6 hours",
+                    "C) CT of the chest to verify x-ray findings",
+                    "D) Emergent needle decompression",
+                    "E) Placement of a chest tube"
+                ],
+                correctIndex: 1,
+                explanation: "For patients who are stable with a small (<15% of the hemithoracic cavity) primary pneumothorax, conservative management with initiation of oxygen via nasal cannula and observation for at least 6 hours is recommended, followed by a repeat chest x-ray to assess for stability in size of the pneumothorax. If stable at 6 hours, patients can return home with a repeat follow-up in 24 hours.\n\nCT imaging is not needed to confirm definitive findings of pneumothorax on chest x-ray. Emergent needle decompression and chest tube placement are reserved for clinically unstable patients with a large pneumothorax or severe symptoms."
+            },
+            {
+                qNum: 39,
+                question: "A 17-year-old female with well-controlled diabetes mellitus is brought to your office by her mother for a sports preparticipation physical evaluation prior to playing soccer. She has intermittent knee pain when running but no other symptoms.\n\nWhich one of the following, if present in this patient, would be a CONTRAINDICATION to playing soccer?",
+                options: [
+                    "A) A BMI >30 kg/m²",
+                    "B) An enlarged spleen",
+                    "C) Insulin-dependent diabetes",
+                    "D) Mitral valve prolapse",
+                    "E) Tibial tubercle apophysitis"
+                ],
+                correctIndex: 1,
+                explanation: "A sports preparticipation evaluation is important for assessing health risks and ensuring an athlete is not unnecessarily restricted from play. An athlete with an acutely enlarged spleen or liver faces an increased risk of organ rupture during contact sports. This patient should be evaluated for a cause of the organomegaly prior to participation.\n\nObesity increases the risk for heat-related illness, but it is not an indication to restrict play. Exercise is beneficial for adolescents with diabetes mellitus. Asymptomatic mild mitral valve prolapse and tibial tubercle apophysitis are not contraindications to play."
+            },
+            {
+                qNum: 40,
+                question: "An otherwise healthy 26-year-old female presents to your clinic with a history of 3 episodes of vertigo occurring over the last week. Each episode lasts for several hours. During the episodes, she notes fullness in the right ear with tinnitus and hearing loss. She has not noticed anything specific that triggers the episodes, and reports consuming 1 glass of wine per night. She does not report headache, visual changes, fever, or URI symptoms. She is currently asymptomatic and a physical examination is unremarkable.\n\nWhich one of the following would be the most appropriate next step?",
+                options: [
+                    "A) Recommending a reduction in alcohol intake",
+                    "B) Performing the Epley maneuver",
+                    "C) Ordering audiometry",
+                    "D) Initiating oral hydrochlorothiazide",
+                    "E) Initiating oral prednisone"
+                ],
+                correctIndex: 2,
+                explanation: "Meniere disease is characterized by spontaneous recurring episodes of vertigo with associated unilateral hearing loss, tinnitus, and nystagmus. Even though there are no specific diagnostic tests, audiometry should be performed in patients suspected of having this condition. Sensorineural hearing loss may or may not be present on audiometric evaluation.\n\nThere is insufficient evidence to support lifestyle interventions such as salt restriction and reduction in alcohol intake. The Epley maneuver is used for BPPV, not Meniere disease. There is no good-quality evidence that diuretics, antivirals, or corticosteroids treat or prevent Meniere disease."
+            }
+        ];
+
+        let currentIndex = 0;
+        let isFlipped = false;
+        let answerShown = false;
+
+        const cardElement = document.getElementById('flashcard');
+        const qNumElement = document.getElementById('question-number');
+        const qTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const answerTextElement = document.getElementById('correct-answer-text');
+        const explanationElement = document.getElementById('explanation-text');
+        const progressIndicator = document.getElementById('progress-indicator');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const showAnswerBtn = document.getElementById('show-answer-btn');
+
+        function init() {
+            renderSlide();
+        }
+
+        function renderSlide() {
+            const data = quizData[currentIndex];
+            
+            // Reset states
+            if (isFlipped) flipCard(false); // flip to front silently
+            answerShown = false;
+            
+            // Update Text
+            qNumElement.textContent = `Question ${data.qNum}`;
+            qTextElement.textContent = data.question;
+            
+            // Render Options
+            optionsContainer.innerHTML = '';
+            data.options.forEach((opt, idx) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = 'p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 transition-colors duration-200 option-div';
+                optDiv.id = `option-${idx}`;
+                optDiv.textContent = opt;
+                optionsContainer.appendChild(optDiv);
+            });
+
+            // Update Back Face Content
+            answerTextElement.textContent = data.options[data.correctIndex];
+            explanationElement.textContent = data.explanation;
+
+            // Reset Answer button
+            showAnswerBtn.innerHTML = '<i class="ph ph-check-circle text-xl"></i> Show Correct Answer';
+            showAnswerBtn.className = 'w-full py-3 px-4 bg-cove-dark hover:bg-cove-light text-white font-medium rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2';
+            showAnswerBtn.disabled = false;
+
+            // Update Navigation
+            progressIndicator.textContent = `${currentIndex + 1} of ${quizData.length}`;
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === quizData.length - 1;
+        }
+
+        function showAnswer() {
+            if (answerShown) return;
+            answerShown = true;
+            
+            const data = quizData[currentIndex];
+            const correctOptDiv = document.getElementById(`option-${data.correctIndex}`);
+            
+            // Highlight correct answer
+            correctOptDiv.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200');
+            correctOptDiv.classList.add('border-cove-accent', 'bg-cove-pale', 'dark:bg-cove-dark/60', 'text-cove-dark', 'dark:text-cove-pale', 'font-semibold', 'ring-1', 'ring-cove-accent');
+
+            // Fade other options
+            const allOptionDivs = document.querySelectorAll('.option-div');
+            allOptionDivs.forEach((div, idx) => {
+                if (idx !== data.correctIndex) {
+                    div.classList.add('opacity-50');
+                }
+            });
+
+            // Update Button Status
+            showAnswerBtn.innerHTML = '<i class="ph ph-check-circle-fill text-xl"></i> Answer Revealed';
+            showAnswerBtn.className = 'w-full py-3 px-4 bg-cove-accent text-slate-900 font-bold rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2';
+            showAnswerBtn.disabled = true;
+        }
+
+        function flipCard(toggle = true) {
+            if (toggle) {
+                isFlipped = !isFlipped;
+            } else {
+                isFlipped = false;
+            }
+            
+            if (isFlipped) {
+                cardElement.classList.add('is-flipped');
+            } else {
+                cardElement.classList.remove('is-flipped');
+            }
+        }
+
+        function nextSlide() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                renderSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderSlide();
+            }
+        }
+
+        // Dark Mode Toggle Logic
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                themeIcon.classList.remove('ph-sun');
+                themeIcon.classList.add('ph-moon');
+            } else {
+                html.classList.add('dark');
+                themeIcon.classList.remove('ph-moon');
+                themeIcon.classList.add('ph-sun');
+            }
+        }
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
