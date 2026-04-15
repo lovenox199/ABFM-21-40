@@ -3,12 +3,7 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bitcount+Grid+Double:wght@100..900&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bitcount+Grid+Double:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bitcount+Grid+Double:wght@100..900&family=Lexend:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ITE Board Review: Q21 - Q40</title>
@@ -148,7 +143,7 @@
                         
                         <div>
                             <h3 class="text-sm uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500 mb-2">Rationale</h3>
-                            <div id="explanation-text" class="text-md leading-relaxed text-slate-700 dark:text-slate-300 whitespace-pre-wrap"></div>
+                            <div id="explanation-text" style="font-family: 'Lexend', sans-serif;" class="text-xl bolt-text leading-relaxed text-slate-700 dark:text-slate-300 whitespace-pre-wrap"></div>
                         </div>
                     </div>
                 </div>
@@ -468,7 +463,7 @@
             optionsContainer.innerHTML = '';
             data.options.forEach((opt, idx) => {
                 const optDiv = document.createElement('div');
-                optDiv.className = 'p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 transition-colors duration-200 option-div';
+                optDiv.className = 'p-4 text-lg font-medium rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 transition-all duration-200 option-div';
                 optDiv.id = `option-${idx}`;
                 optDiv.textContent = opt;
                 optionsContainer.appendChild(optDiv);
@@ -497,8 +492,8 @@
             const correctOptDiv = document.getElementById(`option-${data.correctIndex}`);
             
             // Highlight correct answer
-            correctOptDiv.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200');
-            correctOptDiv.classList.add('border-cove-accent', 'bg-cove-pale', 'dark:bg-cove-dark/60', 'text-cove-dark', 'dark:text-cove-pale', 'font-semibold', 'ring-1', 'ring-cove-accent');
+            correctOptDiv.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-slate-50', 'dark:bg-slate-800/80', 'text-slate-800', 'dark:text-slate-200');
+            correctOptDiv.classList.add('border-cove-dark', 'dark:border-cove-light', 'bg-cove-pale', 'dark:bg-cove-dark/90', 'text-cove-dark', 'dark:text-white', 'font-bold', 'shadow-md');
 
             // Fade other options
             const allOptionDivs = document.querySelectorAll('.option-div');
